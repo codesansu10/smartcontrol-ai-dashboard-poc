@@ -4,7 +4,7 @@ Frontend PoC visual for AI-enabled biogas plant monitoring, anomaly detection, r
 
 ## What The Dashboard Shows
 
-The mockup presents a university-ready SaaS dashboard with static, realistic biogas plant process data. It uses the OEKOBIT logo/colour direction, grouped plant variables, anomaly filtering, embedded BPMN process summaries, and downloadable HTML reports.
+The mockup presents a university-ready SaaS dashboard with static, realistic biogas plant process data. It uses the OEKOBIT logo/colour direction, grouped plant variables, anomaly filtering, operational PoC modules, and downloadable HTML reports.
 
 ## Included Processes
 

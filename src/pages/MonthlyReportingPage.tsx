@@ -1,10 +1,9 @@
 import { CheckCircle2, FileText, Play, Stamp } from "lucide-react";
 import { useMemo, useState } from "react";
-import BpmnProcessSummary from "../components/BpmnProcessSummary";
 import PageHeader from "../components/PageHeader";
 import ReportPreview from "../components/ReportPreview";
 import ReportActions from "../components/ReportActions";
-import { activePlantRecord, monthlyReportingBpmnSteps, monthlySources } from "../data/mockData";
+import { activePlantRecord, monthlySources } from "../data/mockData";
 
 const steps = ["Collect Data", "AI Draft", "Missing Info Check", "Expert Review", "Approval", "Customer Delivery"];
 
@@ -92,11 +91,26 @@ function MonthlyReportingPage() {
         <ReportPreview />
       </div>
 
-      <BpmnProcessSummary
-        title="BPMN Process Summary"
-        description="Embedded monthly expert reporting process from reporting period close to expert sign-off, submission, and audit-trail archive."
-        steps={monthlyReportingBpmnSteps}
-      />
+      <section className="section-card">
+        <div className="section-heading">
+          <h4>Outcome and audit record</h4>
+          <p>Approved reports keep the source list, expert review decision, release state, and submission record together.</p>
+        </div>
+        <div className="learning-grid">
+          <article>
+            <strong>Data completeness</strong>
+            <p>Dashboard data, alerts, anomaly decisions, and operator notes are checked before release.</p>
+          </article>
+          <article>
+            <strong>Expert approval</strong>
+            <p>The report remains in review until flagged issues and missing information are resolved.</p>
+          </article>
+          <article>
+            <strong>Final archive</strong>
+            <p>The approved report is logged with its delivery status and audit trail for future reference.</p>
+          </article>
+        </div>
+      </section>
     </div>
   );
 }

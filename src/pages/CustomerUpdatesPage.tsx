@@ -1,11 +1,10 @@
 import { Radio, Send, ShieldCheck } from "lucide-react";
 import { useState } from "react";
-import BpmnProcessSummary from "../components/BpmnProcessSummary";
 import CustomerUpdatePreview from "../components/CustomerUpdatePreview";
 import PageHeader from "../components/PageHeader";
 import ReportActions from "../components/ReportActions";
 import RiskBadge from "../components/RiskBadge";
-import { activePlantRecord, communicationLog, customerStatusBpmnSteps } from "../data/mockData";
+import { activePlantRecord, communicationLog } from "../data/mockData";
 import type { RiskLevel } from "../types";
 
 const updateSteps = ["Trigger", "Pull Data", "Generate Update", "Risk Check", "Send or Review", "Log"];
@@ -120,11 +119,26 @@ function CustomerUpdatesPage() {
         </div>
       </section>
 
-      <BpmnProcessSummary
-        title="BPMN Process Summary"
-        description="Embedded customer status process from lifecycle data collection to update approval, customer action, communication log, and learning feedback."
-        steps={customerStatusBpmnSteps}
-      />
+      <section className="section-card">
+        <div className="section-heading">
+          <h4>Action and outcome record</h4>
+          <p>Each update keeps the trigger, risk decision, communication state, and follow-up responsibility in one traceable record.</p>
+        </div>
+        <div className="learning-grid">
+          <article>
+            <strong>Customer communication</strong>
+            <p>Low-risk messages can be released with standardized wording and logged automatically.</p>
+          </article>
+          <article>
+            <strong>Expert review path</strong>
+            <p>Medium or high risk updates are routed to expert review before external communication.</p>
+          </article>
+          <article>
+            <strong>Lifecycle feedback</strong>
+            <p>Maintenance decisions and customer responses update the lifecycle and audit record.</p>
+          </article>
+        </div>
+      </section>
     </div>
   );
 }

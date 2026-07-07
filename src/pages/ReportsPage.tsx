@@ -22,7 +22,7 @@ function ReportsPage() {
       <PageHeader
         eyebrow="Professional reporting"
         title="Reports"
-        description="Preview, download, and print reports for the three SMARTCONTROL PoC process maps."
+        description="Preview, download, and print professional reports for the three SMARTCONTROL PoC modules."
       />
 
       <section className="filter-bar reports-filter" aria-label="Report filters">
@@ -66,7 +66,7 @@ function ReportsPage() {
           <div>
             <p className="eyebrow">Report preview</p>
             <h3>{reportType}</h3>
-            <p>{selectedPlant} · {selectedPeriod}</p>
+            <p>{selectedPlant} - {selectedPeriod}</p>
           </div>
           <StatusBadge status={activePlantRecord.currentPlantStatus} />
         </div>

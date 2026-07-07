@@ -1177,52 +1177,6 @@ body {
   text-transform: uppercase;
 }
 
-.bpmn-step-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.bpmn-step {
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #ffffff;
-}
-
-.bpmn-step.decision {
-  border-color: rgba(54, 175, 220, 0.38);
-  background: rgba(54, 175, 220, 0.08);
-}
-
-.bpmn-step-index {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  color: #ffffff;
-  background: var(--accent-teal);
-  font-weight: 900;
-}
-
-.bpmn-step.decision .bpmn-step-index {
-  background: var(--risk-low);
-}
-
-.bpmn-step strong {
-  color: var(--ink);
-}
-
-.bpmn-step p {
-  margin: 5px 0 0;
-  color: var(--muted);
-  line-height: 1.45;
-}
-
 .print-helper {
   padding: 10px 12px;
   border: 1px solid rgba(54, 175, 220, 0.34);
@@ -1233,8 +1187,7 @@ body {
 }
 
 @media (max-width: 1180px) {
-  .poc-card-grid,
-  .bpmn-step-grid {
+  .poc-card-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -13,7 +13,7 @@ import type {
 export const OEKOBIT_LOGO_URL =
   "https://www.oekobit-biogas.com/wp-content/uploads/20231109_oekobitbiogas_logo_compact_rgb.png";
 
-export const plantOptions = ["Plant_01", "Plant_02", "Plant_03"];
+export const plantOptions = ["Plant 01", "Plant 02", "Plant 03"];
 export const dateOptions = ["Today", "Last 7 days", "June 2026", "Q2 2026"];
 
 export const fieldGroupOptions: FieldGroupFilter[] = [
@@ -49,7 +49,7 @@ export const fieldGroupDescriptions: Record<FieldGroupName, string> = {
 };
 
 export const activePlantRecord: PlantRecord = {
-  plantId: "Plant_01",
+  plantId: "Plant 01",
   date: "2026-07-07",
   reportingPeriod: "Last 7 days",
   currentPlantStatus: "Anomaly",
@@ -227,7 +227,6 @@ export const plantFields: PlantField[] = [
   {
     key: "biogas_yield_m3_per_ton",
     value: "78.2 m3/ton",
-    expected: "Not available",
     change: "-18.0%",
     status: "Warning",
     group: "Gas Production and Gas Quality",
@@ -397,9 +396,9 @@ export const affectedVariables: AffectedVariable[] = plantFields
   .filter((field) => field.trend)
   .map((field) => ({
     name: field.key,
-    current: String(field.value ?? "Not available"),
-    expected: field.expected ?? "Not available",
-    change: field.change ?? "0",
+    current: String(field.value ?? "-"),
+    expected: field.expected && field.expected.toLowerCase() !== "not available" ? field.expected : "-",
+    change: field.change ?? "-",
     status: field.status,
     description: field.description,
     risk: riskFromStatus[field.status],
@@ -453,7 +452,7 @@ export const baseActivity: ActivityEntry[] = [
     step: "Plant data received",
     owner: "Plant",
     time: "08:10",
-    detail: "Latest sensor packet from Plant_01 was collected for the dashboard.",
+    detail: "Latest sensor packet from Plant 01 was collected for the dashboard.",
     state: "Complete",
   },
   {
@@ -506,7 +505,7 @@ export const workflowSections = [
     steps: [
       {
         title: "Plant/data source collects plant data",
-        detail: "Sensor and operational values from Plant_01 are collected for the selected reporting period.",
+        detail: "Sensor and operational values from Plant 01 are collected for the selected reporting period.",
       },
       {
         title: "Selected plant and period are attached",

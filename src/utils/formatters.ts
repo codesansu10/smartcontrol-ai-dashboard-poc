@@ -51,7 +51,7 @@ export function formatFieldName(key: string) {
 }
 
 export function displayValue(value: PlantField["value"]) {
-  if (value === null || value === undefined || value === "") return "Not available";
+  if (value === null || value === undefined || value === "") return "-";
   if (typeof value === "boolean") return value ? "Yes" : "No";
   return String(value);
 }

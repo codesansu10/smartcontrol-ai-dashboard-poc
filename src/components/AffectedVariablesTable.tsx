@@ -3,6 +3,10 @@ import { formatFieldName } from "../utils/formatters";
 import RiskBadge from "./RiskBadge";
 import StatusBadge from "./StatusBadge";
 
+function valueOrDash(value: string) {
+  return value && value.toLowerCase() !== "not available" ? value : "-";
+}
+
 function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }) {
   return (
     <div className="table-wrap">
@@ -11,7 +15,7 @@ function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }
           <tr>
             <th>Plant variable</th>
             <th>Current</th>
-            <th>Expected</th>
+            <th>Expected / Reference</th>
             <th>Change</th>
             <th>Status</th>
             <th>Risk</th>
@@ -21,9 +25,11 @@ function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }
           {variables.map((variable) => (
             <tr key={variable.name}>
               <td>{formatFieldName(variable.name)}</td>
-              <td>{variable.current}</td>
-              <td>{variable.expected}</td>
-              <td className={variable.change.startsWith("+") ? "delta-up" : "delta-down"}>{variable.change}</td>
+              <td>{valueOrDash(variable.current)}</td>
+              <td>{valueOrDash(variable.expected)}</td>
+              <td className={variable.change.startsWith("+") ? "delta-up" : variable.change.startsWith("-") ? "delta-down" : ""}>
+                {valueOrDash(variable.change)}
+              </td>
               <td>
                 <StatusBadge status={variable.status} />
               </td>

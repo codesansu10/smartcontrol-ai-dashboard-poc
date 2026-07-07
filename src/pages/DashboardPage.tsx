@@ -64,36 +64,30 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
         onStatusChange={setSelectedStatus}
       />
 
-      <section className="kpi-grid" aria-label="Dashboard KPI cards">
-        {kpis.map((kpi) => (
-          <KpiCard key={kpi.label} {...kpi} />
-        ))}
-      </section>
-
       <section className="poc-card-grid" aria-label="Three PoC process cards">
         {pocCards.map((card) => (
           <article className="poc-card" key={card.title}>
             <div>
-              <p className="eyebrow">{card.status}</p>
+              <p className="eyebrow">Status: {card.status}</p>
               <h4>{card.title}</h4>
               <p>{card.purpose}</p>
             </div>
             <dl>
               <div>
-                <dt>Main BPMN stage</dt>
+                <dt>Current stage</dt>
                 <dd>{card.stage}</dd>
               </div>
               <div>
-                <dt>AI/system role</dt>
+                <dt>Key output</dt>
+                <dd>{card.output}</dd>
+              </div>
+              <div>
+                <dt>System role</dt>
                 <dd>{card.aiRole}</dd>
               </div>
               <div>
-                <dt>Human/expert role</dt>
+                <dt>Human review</dt>
                 <dd>{card.humanRole}</dd>
-              </div>
-              <div>
-                <dt>Main output</dt>
-                <dd>{card.output}</dd>
               </div>
             </dl>
             <button type="button" className="secondary-button" onClick={() => openPoc(card.title)}>
@@ -127,13 +121,54 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
         </article>
       </section>
 
+      <section>
+        <div className="section-heading">
+          <h4>Current Plant Summary</h4>
+          <p>Operational snapshot for the selected plant and reporting period.</p>
+        </div>
+        <div className="summary-strip compact-summary">
+          <article>
+            <Gauge size={20} aria-hidden="true" />
+            <span>Status</span>
+            <StatusBadge status={activePlantRecord.currentPlantStatus} />
+          </article>
+          <article>
+            <AlertTriangle size={20} aria-hidden="true" />
+            <span>Risk Level</span>
+            <strong>{activePlantRecord.riskLevel}</strong>
+          </article>
+          <article>
+            <BrainCircuit size={20} aria-hidden="true" />
+            <span>AI Anomaly Summary</span>
+            <strong>{activePlantRecord.anomalyStatus}</strong>
+          </article>
+          <article>
+            <ClipboardCheck size={20} aria-hidden="true" />
+            <span>Report / Update Status</span>
+            <strong>Review pending</strong>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div className="section-heading">
+          <h4>Key Metrics</h4>
+          <p>Live monitoring indicators for anomaly review, alerts, and report readiness.</p>
+        </div>
+        <div className="kpi-grid" aria-label="Dashboard KPI cards">
+          {kpis.map((kpi) => (
+            <KpiCard key={kpi.label} {...kpi} />
+          ))}
+        </div>
+      </section>
+
       <div className="dashboard-grid">
         <section className="section-card">
           <div className="section-title-row">
             <BrainCircuit size={20} aria-hidden="true" />
             <div>
-              <h4>AI Explanation</h4>
-              <p>Human-readable explanation for professor presentation.</p>
+              <h4>AI Anomaly Summary</h4>
+              <p>Human-readable explanation for expert review.</p>
             </div>
           </div>
           <div className="insight-box">
@@ -146,7 +181,7 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
           <div className="section-title-row">
             <Wrench size={20} aria-hidden="true" />
             <div>
-              <h4>Recommended Action</h4>
+              <h4>Active Alerts and Recommended Action</h4>
               <p>AI supports expert review; operator remains responsible.</p>
             </div>
           </div>

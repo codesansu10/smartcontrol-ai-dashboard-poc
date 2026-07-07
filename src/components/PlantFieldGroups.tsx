@@ -11,6 +11,10 @@ interface PlantFieldGroupsProps {
   compact?: boolean;
 }
 
+function hasReportValue(value?: string) {
+  return Boolean(value && value.trim() && value.toLowerCase() !== "not available");
+}
+
 function PlantFieldGroups({ fields, selectedGroup, selectedStatus, compact = false }: PlantFieldGroupsProps) {
   const visibleFields = fields.filter(
     (field) => matchesFieldGroup(field, selectedGroup) && matchesStatusFilter(field, selectedStatus)
@@ -52,12 +56,20 @@ function PlantFieldGroups({ fields, selectedGroup, selectedStatus, compact = fal
                   </div>
                   <strong>{displayValue(field.value)}</strong>
                   <p>{field.description}</p>
-                  <div className="field-meta">
-                    <span>Expected: {field.expected ?? "Not available"}</span>
-                    <span className={field.change?.startsWith("+") ? "delta-up" : field.change?.startsWith("-") ? "delta-down" : ""}>
-                      Change: {field.change ?? "Not available"}
-                    </span>
-                  </div>
+                  {(hasReportValue(field.expected) || hasReportValue(field.change)) && (
+                    <div className="field-meta">
+                      {hasReportValue(field.expected) && <span>Reference: {field.expected}</span>}
+                      {hasReportValue(field.change) && (
+                        <span
+                          className={
+                            field.change?.startsWith("+") ? "delta-up" : field.change?.startsWith("-") ? "delta-down" : ""
+                          }
+                        >
+                          Change: {field.change}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </article>
               ))}
             </div>
