@@ -1,4 +1,5 @@
 import type { AffectedVariable } from "../types";
+import { formatFieldName } from "../utils/formatters";
 import RiskBadge from "./RiskBadge";
 
 function sparklinePoints(values: number[]) {
@@ -24,7 +25,7 @@ function TrendMiniCard({ variable }: { variable: AffectedVariable }) {
     <article className="trend-card">
       <div className="trend-card-head">
         <div>
-          <p>{variable.name}</p>
+          <p>{formatFieldName(variable.name)}</p>
           <strong>{variable.current}</strong>
         </div>
         <RiskBadge level={variable.risk} compact />

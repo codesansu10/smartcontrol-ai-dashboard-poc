@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { OEKOBIT_LOGO_URL } from "../data/mockData";
 import type { PageKey } from "../types";
 
 interface NavItem {
@@ -12,20 +13,17 @@ interface LayoutProps {
   activePage: PageKey;
   navItems: NavItem[];
   onNavigate: (page: PageKey) => void;
-  signalIcon: LucideIcon;
   children: ReactNode;
 }
 
-function Layout({ activePage, navItems, onNavigate, signalIcon: SignalIcon, children }: LayoutProps) {
+function Layout({ activePage, navItems, onNavigate, children }: LayoutProps) {
   return (
     <div className="app-shell">
       <aside className="sidebar" aria-label="Primary navigation">
         <div className="brand-block">
-          <div className="brand-mark">
-            <SignalIcon size={22} aria-hidden="true" />
-          </div>
+          <img className="brand-logo" src={OEKOBIT_LOGO_URL} alt="OEKOBIT Biogas" />
           <div>
-            <p className="brand-kicker">OEKOBIT PoC</p>
+            <p className="brand-kicker">OEKOBIT Biogas</p>
             <h1>SMARTCONTROL 2.0</h1>
           </div>
         </div>
@@ -50,10 +48,13 @@ function Layout({ activePage, navItems, onNavigate, signalIcon: SignalIcon, chil
 
       <div className="main-area">
         <header className="top-header">
-          <div>
-            <p className="eyebrow">Phase 3 PoC visual mockup</p>
+          <div className="header-title-group">
+            <img className="header-logo" src={OEKOBIT_LOGO_URL} alt="OEKOBIT Biogas" />
+            <div>
+              <p className="eyebrow">Industrial AI Monitoring PoC</p>
             <h2>SMARTCONTROL 2.0 AI Dashboard</h2>
-            <p>Frontend PoC visual for AI-enabled process redesign</p>
+              <p>Biogas Plant Monitoring, Anomaly Detection and Reporting</p>
+            </div>
           </div>
         </header>
         <main className="content-area">{children}</main>

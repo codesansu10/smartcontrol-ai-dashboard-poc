@@ -1,4 +1,5 @@
 import type { AffectedVariable } from "../types";
+import { formatFieldName } from "../utils/formatters";
 import RiskBadge from "./RiskBadge";
 
 function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }) {
@@ -18,7 +19,7 @@ function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }
         <tbody>
           {variables.map((variable) => (
             <tr key={variable.name}>
-              <td>{variable.name}</td>
+              <td>{formatFieldName(variable.name)}</td>
               <td>{variable.current}</td>
               <td>{variable.expected}</td>
               <td className={variable.change.startsWith("+") ? "delta-up" : "delta-down"}>{variable.change}</td>
