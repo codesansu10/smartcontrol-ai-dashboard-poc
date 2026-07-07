@@ -1,9 +1,11 @@
 import { Radio, Send, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import BpmnProcessSummary from "../components/BpmnProcessSummary";
 import CustomerUpdatePreview from "../components/CustomerUpdatePreview";
 import PageHeader from "../components/PageHeader";
+import ReportActions from "../components/ReportActions";
 import RiskBadge from "../components/RiskBadge";
-import { communicationLog } from "../data/mockData";
+import { activePlantRecord, communicationLog, customerStatusBpmnSteps } from "../data/mockData";
 import type { RiskLevel } from "../types";
 
 const updateSteps = ["Trigger", "Pull Data", "Generate Update", "Risk Check", "Send or Review", "Log"];
@@ -17,8 +19,9 @@ function CustomerUpdatesPage() {
     <div className="page-stack">
       <PageHeader
         eyebrow="Standard customer status updates"
-        title="Routine communication can be automated when risk is low"
+        title="Customer Status Updates"
         description="The workflow shows how standardized messages are generated, checked, sent, or routed for expert review."
+        action={<ReportActions selectedPlant={activePlantRecord.plantId} selectedPeriod={activePlantRecord.reportingPeriod} primaryType="Customer Status Update Report" />}
       />
 
       <section className="section-card">
@@ -116,6 +119,12 @@ function CustomerUpdatesPage() {
           </table>
         </div>
       </section>
+
+      <BpmnProcessSummary
+        title="BPMN Process Summary"
+        description="Embedded customer status process from lifecycle data collection to update approval, customer action, communication log, and learning feedback."
+        steps={customerStatusBpmnSteps}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { AlertTriangle, BrainCircuit, ClipboardCheck, Gauge, ShieldAlert, Sparkl
 import { useMemo, useState } from "react";
 import ActivityLog from "../components/ActivityLog";
 import AffectedVariablesTable from "../components/AffectedVariablesTable";
+import BpmnProcessSummary from "../components/BpmnProcessSummary";
 import FilterBar from "../components/FilterBar";
 import PageHeader from "../components/PageHeader";
 import PlantFieldGroups from "../components/PlantFieldGroups";
@@ -14,6 +15,7 @@ import TrendMiniCard from "../components/TrendMiniCard";
 import {
   activePlantRecord,
   affectedVariables,
+  anomalyBpmnSteps,
   aiExplanation,
   baseActivity,
   plantFields,
@@ -219,6 +221,12 @@ function AnomalyDetectionPage() {
           </div>
         </div>
       </section>
+
+      <BpmnProcessSummary
+        title="BPMN Process Summary"
+        description="Embedded anomaly-detection workflow from plant operation to expert review, operator decision, learning feedback, and report update."
+        steps={anomalyBpmnSteps}
+      />
 
       <div className="two-column">
         <section className="section-card">

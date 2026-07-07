@@ -1,8 +1,10 @@
 import { CheckCircle2, FileText, Play, Stamp } from "lucide-react";
 import { useMemo, useState } from "react";
+import BpmnProcessSummary from "../components/BpmnProcessSummary";
 import PageHeader from "../components/PageHeader";
 import ReportPreview from "../components/ReportPreview";
-import { monthlySources } from "../data/mockData";
+import ReportActions from "../components/ReportActions";
+import { activePlantRecord, monthlyReportingBpmnSteps, monthlySources } from "../data/mockData";
 
 const steps = ["Collect Data", "AI Draft", "Missing Info Check", "Expert Review", "Approval", "Customer Delivery"];
 
@@ -21,8 +23,9 @@ function MonthlyReportingPage() {
     <div className="page-stack">
       <PageHeader
         eyebrow="AI-assisted monthly expert reporting"
-        title="AI drafts and structures, experts interpret and approve"
+        title="Monthly Expert Reporting"
         description="A transparent reporting workflow turns validated dashboard events into an expert-approved customer report."
+        action={<ReportActions selectedPlant={activePlantRecord.plantId} selectedPeriod={activePlantRecord.reportingPeriod} primaryType="Monthly Expert Reporting Report" />}
       />
 
       <section className="section-card">
@@ -88,6 +91,12 @@ function MonthlyReportingPage() {
 
         <ReportPreview />
       </div>
+
+      <BpmnProcessSummary
+        title="BPMN Process Summary"
+        description="Embedded monthly expert reporting process from reporting period close to expert sign-off, submission, and audit-trail archive."
+        steps={monthlyReportingBpmnSteps}
+      />
     </div>
   );
 }

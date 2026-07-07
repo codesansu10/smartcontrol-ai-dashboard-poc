@@ -1,11 +1,13 @@
 import {
   activePlantRecord,
+  anomalyBpmnSteps,
   aiExplanation,
+  customerStatusBpmnSteps,
   fieldGroupDescriptions,
+  monthlyReportingBpmnSteps,
   OEKOBIT_LOGO_URL,
   plantFields,
   recommendedAction,
-  workflowSections,
 } from "../data/mockData";
 import type { FieldGroupName } from "../types";
 import { displayValue, formatFieldName } from "./formatters";
@@ -26,6 +28,14 @@ export function buildReportHtml(reportType: string, selectedPlant: string, selec
   const generatedAt = new Date().toLocaleString();
   const ruleAlerts = fieldsForGroup("Rule-Based Monitoring");
   const aiFields = fieldsForGroup("AI Anomaly Detection");
+  const processSteps =
+    reportType === "Monthly Expert Reporting Report"
+      ? monthlyReportingBpmnSteps
+      : reportType === "Customer Status Update Report"
+        ? customerStatusBpmnSteps
+        : reportType === "Full SMARTCONTROL PoC Summary Report"
+          ? [...anomalyBpmnSteps, ...monthlyReportingBpmnSteps, ...customerStatusBpmnSteps]
+          : anomalyBpmnSteps;
 
   const groupSections = Object.keys(fieldGroupDescriptions)
     .map((group) => {
@@ -65,22 +75,13 @@ export function buildReportHtml(reportType: string, selectedPlant: string, selec
     })
     .join("");
 
-  const workflowSummary = workflowSections
+  const workflowSummary = processSteps
     .map(
-      (section) => `
-        <section>
-          <h2>${escapeHtml(section.section)}</h2>
-          ${section.steps
-            .map(
-              (step) => `
-                <div class="step">
-                  <strong>${escapeHtml(step.title)}</strong>
-                  <p>${escapeHtml(step.detail)}</p>
-                </div>
-              `
-            )
-            .join("")}
-        </section>
+      (step, index) => `
+        <div class="step">
+          <strong>${index + 1}. ${escapeHtml(step.title)}</strong>
+          <p>${escapeHtml(step.detail)}</p>
+        </div>
       `
     )
     .join("");
@@ -237,7 +238,7 @@ export function buildReportHtml(reportType: string, selectedPlant: string, selec
         <img src="${OEKOBIT_LOGO_URL}" alt="OEKOBIT Biogas" />
         <div>
           <h1>SMARTCONTROL 2.0 AI Dashboard</h1>
-          <p>${escapeHtml(reportType)} · Biogas Plant Monitoring, Anomaly Detection and Reporting</p>
+          <p>${escapeHtml(reportType)} · Biogas Plant Monitoring, Reporting and Customer Updates</p>
         </div>
       </header>
       <main>
@@ -306,7 +307,7 @@ export function buildReportHtml(reportType: string, selectedPlant: string, selec
 
         <section>
           <h2>Outcome Documented</h2>
-          <p>Outcome is pending expert validation. The final operator decision and result will be attached to the anomaly record and reporting workflow.</p>
+          <p>Outcome is pending expert validation. The final human decision and result will be attached to the relevant PoC record and report.</p>
         </section>
 
         <section>
@@ -315,7 +316,7 @@ export function buildReportHtml(reportType: string, selectedPlant: string, selec
         </section>
 
         <section>
-          <h2>Process Workflow Summary</h2>
+          <h2>Related BPMN Process Steps</h2>
           ${workflowSummary}
         </section>
 

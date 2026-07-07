@@ -4,14 +4,15 @@ Frontend PoC visual for AI-enabled biogas plant monitoring, anomaly detection, r
 
 ## What The Dashboard Shows
 
-The mockup presents a university-ready SaaS dashboard with static, realistic biogas plant process data. It uses the OEKOBIT logo/colour direction, grouped plant variables, anomaly filtering, workflow explanation cards, and downloadable HTML reports.
+The mockup presents a university-ready SaaS dashboard with static, realistic biogas plant process data. It uses the OEKOBIT logo/colour direction, grouped plant variables, anomaly filtering, embedded BPMN process summaries, and downloadable HTML reports.
 
 ## Included Processes
 
 - Dashboard: grouped plant readings, KPI cards, filters, rule-based alerts, AI explanation, and recommended action.
 - AI Anomaly Detection: AI detects unusual plant behavior, OEKOBIT experts validate alerts, and plant operators decide on operational action.
-- AI Process Workflow: professor-friendly explanation of data collection, validation, AI scoring, expert review, operator action, learning, and reporting.
-- Reports: selectable daily, anomaly, workflow, and expert review report previews with download/print actions.
+- Monthly Expert Reporting: AI structures monthly report drafts, experts review flagged issues, and approved reports are archived/submitted.
+- Customer Status Updates: AI supports routine updates and lifecycle alerts, with expert approval and customer/operator action tracking.
+- Reports: selectable anomaly, monthly expert reporting, customer update, and full PoC summary report previews with download/print actions.
 - Settings/About: responsible AI safeguards and PoC context.
 
 ## Oversight Model

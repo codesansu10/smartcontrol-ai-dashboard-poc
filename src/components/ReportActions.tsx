@@ -10,17 +10,17 @@ interface ReportActionsProps {
 function ReportActions({
   selectedPlant,
   selectedPeriod,
-  primaryType = "AI Anomaly Detection Report",
+  primaryType = "Anomaly Detection Report",
 }: ReportActionsProps) {
   return (
     <div className="report-actions">
       <button
         type="button"
         className="primary-button"
-        onClick={() => downloadReport("Process Workflow Report", selectedPlant, selectedPeriod)}
+        onClick={() => downloadReport("Full SMARTCONTROL PoC Summary Report", selectedPlant, selectedPeriod)}
       >
         <Download size={17} aria-hidden="true" />
-        Download Process Report
+        Download PoC Summary
       </button>
       <button
         type="button"
@@ -28,7 +28,7 @@ function ReportActions({
         onClick={() => downloadReport(primaryType, selectedPlant, selectedPeriod)}
       >
         <Download size={17} aria-hidden="true" />
-        Download Anomaly Report
+        Download Report
       </button>
       <button
         type="button"

@@ -1,7 +1,8 @@
 export type PageKey =
   | "dashboard"
   | "anomaly"
-  | "workflow"
+  | "reporting"
+  | "updates"
   | "reports"
   | "settings";
 
@@ -46,7 +47,8 @@ export interface AffectedVariable {
   current: string;
   expected: string;
   change: string;
-  status: string;
+  status: RecordStatus;
+  description?: string;
   risk: RiskLevel;
   recordStatus?: RecordStatus;
   group?: FieldGroupName;

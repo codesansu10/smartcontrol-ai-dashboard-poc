@@ -11,6 +11,7 @@ import {
   aiExplanation,
   kpis,
   plantFields,
+  pocCards,
   recommendedAction,
 } from "../data/mockData";
 import type { FieldGroupFilter, StatusFilter } from "../types";
@@ -31,6 +32,12 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
   );
 
   const ruleAlertCount = plantFields.filter((field) => field.group === "Rule-Based Monitoring" && field.status !== "Normal").length;
+
+  const openPoc = (title: string) => {
+    if (title === "Anomaly Detection") onOpenAnomaly();
+    if (title === "Monthly Expert Reporting") window.dispatchEvent(new CustomEvent("smartcontrol:navigate", { detail: "reporting" }));
+    if (title === "Customer Status Updates") window.dispatchEvent(new CustomEvent("smartcontrol:navigate", { detail: "updates" }));
+  };
 
   return (
     <div className="page-stack">
@@ -60,6 +67,40 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
       <section className="kpi-grid" aria-label="Dashboard KPI cards">
         {kpis.map((kpi) => (
           <KpiCard key={kpi.label} {...kpi} />
+        ))}
+      </section>
+
+      <section className="poc-card-grid" aria-label="Three PoC process cards">
+        {pocCards.map((card) => (
+          <article className="poc-card" key={card.title}>
+            <div>
+              <p className="eyebrow">{card.status}</p>
+              <h4>{card.title}</h4>
+              <p>{card.purpose}</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Main BPMN stage</dt>
+                <dd>{card.stage}</dd>
+              </div>
+              <div>
+                <dt>AI/system role</dt>
+                <dd>{card.aiRole}</dd>
+              </div>
+              <div>
+                <dt>Human/expert role</dt>
+                <dd>{card.humanRole}</dd>
+              </div>
+              <div>
+                <dt>Main output</dt>
+                <dd>{card.output}</dd>
+              </div>
+            </dl>
+            <button type="button" className="secondary-button" onClick={() => openPoc(card.title)}>
+              <ArrowRight size={17} aria-hidden="true" />
+              Open {card.title}
+            </button>
+          </article>
         ))}
       </section>
 

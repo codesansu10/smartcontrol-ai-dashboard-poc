@@ -1,6 +1,7 @@
 import type { AffectedVariable } from "../types";
 import { formatFieldName } from "../utils/formatters";
 import RiskBadge from "./RiskBadge";
+import StatusBadge from "./StatusBadge";
 
 function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }) {
   return (
@@ -23,7 +24,9 @@ function AffectedVariablesTable({ variables }: { variables: AffectedVariable[] }
               <td>{variable.current}</td>
               <td>{variable.expected}</td>
               <td className={variable.change.startsWith("+") ? "delta-up" : "delta-down"}>{variable.change}</td>
-              <td>{variable.status}</td>
+              <td>
+                <StatusBadge status={variable.status} />
+              </td>
               <td>
                 <RiskBadge level={variable.risk} compact />
               </td>

@@ -13,7 +13,7 @@ import {
 import { downloadReport, printReport } from "../utils/reporting";
 
 function ReportsPage() {
-  const [reportType, setReportType] = useState(reportTypes[1]);
+  const [reportType, setReportType] = useState(reportTypes[0]);
   const [selectedPlant, setSelectedPlant] = useState(activePlantRecord.plantId);
   const [selectedPeriod, setSelectedPeriod] = useState(activePlantRecord.reportingPeriod);
 
@@ -22,7 +22,7 @@ function ReportsPage() {
       <PageHeader
         eyebrow="Professional reporting"
         title="Reports"
-        description="Preview, download, and print plant monitoring, anomaly, workflow, and expert review reports."
+        description="Preview, download, and print reports for the three SMARTCONTROL PoC process maps."
       />
 
       <section className="filter-bar reports-filter" aria-label="Report filters">
@@ -89,6 +89,7 @@ function ReportsPage() {
           </article>
         </div>
         <div className="report-preview-body">
+          <p className="print-helper">Use Print Report to save as PDF.</p>
           <h4>AI anomaly detection result</h4>
           <p>{aiExplanation}</p>
           <h4>Human decision/action section</h4>

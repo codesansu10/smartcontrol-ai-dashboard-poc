@@ -400,7 +400,8 @@ export const affectedVariables: AffectedVariable[] = plantFields
     current: String(field.value ?? "Not available"),
     expected: field.expected ?? "Not available",
     change: field.change ?? "0",
-    status: field.description,
+    status: field.status,
+    description: field.description,
     risk: riskFromStatus[field.status],
     recordStatus: field.status,
     group: field.group,
@@ -412,7 +413,7 @@ export const kpis = [
   { label: "Current Plant Status", value: "Anomaly", detail: "Expert review required", tone: "critical" },
   { label: "Anomaly Score", value: "0.82", detail: "Isolation Forest output", tone: "warning" },
   { label: "Rule Alerts", value: "6", detail: "3 critical, 3 warning", tone: "info" },
-  { label: "Reports Ready", value: "4", detail: "Daily, anomaly, workflow, expert", tone: "success" },
+  { label: "Reports Ready", value: "4", detail: "Anomaly, monthly, customer, summary", tone: "success" },
 ];
 
 export const processFlows = [
@@ -601,10 +602,79 @@ export const workflowSections = [
 ];
 
 export const reportTypes = [
-  "Daily Plant Monitoring Report",
-  "AI Anomaly Detection Report",
-  "Process Workflow Report",
-  "Expert Review Report",
+  "Anomaly Detection Report",
+  "Monthly Expert Reporting Report",
+  "Customer Status Update Report",
+  "Full SMARTCONTROL PoC Summary Report",
+];
+
+export const anomalyBpmnSteps = [
+  { title: "Plant operation running", detail: "The biogas plant continues normal operation while process data is collected." },
+  { title: "Collect plant data", detail: "Process, gas quality, equipment, and context signals are collected from the plant." },
+  { title: "Validate data quality", detail: "Smart/control checks whether sensor values are complete, current, and plausible." },
+  { title: "Decision: Data usable?", detail: "No: flag data issue, request sensor review, and document it. Yes: update the live dashboard." },
+  { title: "Run anomaly detection", detail: "The AI model scores the validated monitoring window." },
+  { title: "Decision: Anomaly detected?", detail: "No: show normal status and update dashboard/report. Yes: generate alert and prepare AI explanation." },
+  { title: "Expert reviews alert", detail: "An OEKOBIT expert validates whether the AI alert is a relevant operational risk." },
+  { title: "Decision: Relevant risk?", detail: "No: mark as false alarm and log feedback. Yes: create a recommendation." },
+  { title: "Operator decides action", detail: "The plant operator decides whether to monitor, adjust process, or request maintenance." },
+  { title: "Outcome documented", detail: "Action, no action, learning feedback, dashboard update, and report update are stored." },
+];
+
+export const monthlyReportingBpmnSteps = [
+  { title: "Reporting period ends", detail: "The monthly reporting cycle starts for the selected plant and period." },
+  { title: "Confirm report scope", detail: "The plant operator confirms which plant, period, and scope should be included." },
+  { title: "Collect plant and SCADA data", detail: "Dashboard data, alerts, validated anomalies, operator decisions, and outcomes are collected." },
+  { title: "Validate data quality", detail: "Data completeness and plausibility are checked before KPI calculation." },
+  { title: "Decision: Data complete?", detail: "No: add missing information and return to validation. Yes: calculate KPIs." },
+  { title: "Generate draft report", detail: "AI drafts the report structure and prepares sections for expert interpretation." },
+  { title: "Decision: Risk or anomaly?", detail: "Yes: create correction task. No: continue with flagged issue review." },
+  { title: "Expert reviews flagged issues", detail: "OEKOBIT expert reviews anomalies, recommendations, and missing context." },
+  { title: "Decision: Expert sign-off?", detail: "No: return to correction or missing info. Yes: approve release." },
+  { title: "Submit and archive", detail: "Lock final report, submit externally, archive audit trail, and mark report submitted." },
+];
+
+export const customerStatusBpmnSteps = [
+  { title: "Collect lifecycle data", detail: "Sensor data, component runtime, maintenance history, and schedule are collected." },
+  { title: "Validate data quality", detail: "Smart/control checks whether lifecycle and maintenance data are usable." },
+  { title: "Decision: Data usable?", detail: "No: flag and log data issue. Yes: update dashboard." },
+  { title: "Calculate maintenance status", detail: "Component lifetime, runtime, and maintenance status are calculated." },
+  { title: "Decision: Update due?", detail: "No: continue monitoring. Yes: trigger the update process." },
+  { title: "AI predicts wear risk", detail: "The AI layer predicts wear risk or lifecycle alert conditions." },
+  { title: "Decision: Lifecycle alert?", detail: "No: assess plant status and draft status update. Yes: generate lifecycle alert for expert review." },
+  { title: "Decision: Repair needed?", detail: "No: monitor next cycle. Yes: send maintenance notification." },
+  { title: "Expert approves update", detail: "Expert reviews draft; rejected drafts are revised and resubmitted." },
+  { title: "Customer action and learning", detail: "Send update, receive operator action, log communication, update lifecycle record, store learning data, and document outcome." },
+];
+
+export const pocCards = [
+  {
+    title: "Anomaly Detection",
+    purpose: "Detect unusual plant behaviour from process, gas quality, and equipment signals.",
+    status: "Expert review pending",
+    stage: "AI alert generated",
+    aiRole: "Calculates anomaly score and prepares explanation.",
+    humanRole: "Expert validates, operator decides action.",
+    output: "Alert, recommendation, learning feedback, report update.",
+  },
+  {
+    title: "Monthly Expert Reporting",
+    purpose: "Turn monthly plant and SCADA data into an expert-approved report.",
+    status: "Draft review pending",
+    stage: "Expert sign-off",
+    aiRole: "Structures the draft, KPI summary, and missing-information checks.",
+    humanRole: "Expert reviews flagged issues and approves release.",
+    output: "Final report, audit trail, external submission.",
+  },
+  {
+    title: "Customer Status Updates",
+    purpose: "Generate routine customer updates and lifecycle/maintenance notifications.",
+    status: "Low-risk update ready",
+    stage: "Expert approval",
+    aiRole: "Predicts wear risk and drafts standardized updates.",
+    humanRole: "Expert approves message; customer operator confirms action.",
+    output: "Approved update, communication log, lifecycle record.",
+  },
 ];
 
 export const monthlySources = [
@@ -619,7 +689,7 @@ export const monthlySources = [
 export const communicationLog = [
   {
     customer: "Professor demonstration",
-    trigger: "Process workflow report",
+    trigger: "Full SMARTCONTROL PoC Summary Report",
     risk: "Low",
     decision: "Ready to print",
     time: "Jul 07, 09:00",
