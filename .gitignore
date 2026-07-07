@@ -1,0 +1,10 @@
+node_modules/
+dist/
+work/
+outputs/
+.agents/
+.codex/
+*.tsbuildinfo
+*.log
+.env
+.env.*
