@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowRight, BrainCircuit, ClipboardCheck, Gauge, Lightbulb, Wrench } from "lucide-react";
+import { AlertTriangle, ArrowRight, BrainCircuit, ClipboardCheck, Gauge, Lightbulb } from "lucide-react";
 import { useMemo, useState } from "react";
 import FilterBar from "../components/FilterBar";
 import KpiCard from "../components/KpiCard";
@@ -11,11 +11,10 @@ import {
   aiExplanation,
   kpis,
   plantFields,
-  pocCards,
   recommendedAction,
 } from "../data/mockData";
 import type { FieldGroupFilter, StatusFilter } from "../types";
-import { matchesFieldGroup, matchesStatusFilter } from "../utils/formatters";
+import { displayValue, formatFieldName } from "../utils/formatters";
 
 function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
   const [selectedPlant, setSelectedPlant] = useState(activePlantRecord.plantId);
@@ -23,34 +22,40 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
   const [selectedGroup, setSelectedGroup] = useState<FieldGroupFilter>("All");
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("All");
 
-  const filteredCount = useMemo(
-    () =>
-      plantFields.filter(
-        (field) => matchesFieldGroup(field, selectedGroup) && matchesStatusFilter(field, selectedStatus)
-      ).length,
-    [selectedGroup, selectedStatus]
+  const ruleAlerts = useMemo(
+    () => plantFields.filter((field) => field.group === "Rule-Based Monitoring"),
+    []
   );
 
-  const ruleAlertCount = plantFields.filter((field) => field.group === "Rule-Based Monitoring" && field.status !== "Normal").length;
-
-  const openPoc = (title: string) => {
-    if (title === "Anomaly Detection") onOpenAnomaly();
-    if (title === "Monthly Expert Reporting") window.dispatchEvent(new CustomEvent("smartcontrol:navigate", { detail: "reporting" }));
-    if (title === "Customer Status Updates") window.dispatchEvent(new CustomEvent("smartcontrol:navigate", { detail: "updates" }));
-  };
+  const reportStatuses = [
+    {
+      label: "Anomaly Detection Report",
+      status: "Expert review pending",
+      detail: "Ready after alert validation and operator decision.",
+    },
+    {
+      label: "Monthly Expert Reporting",
+      status: "Draft review pending",
+      detail: "KPI and issue summary prepared for expert approval.",
+    },
+    {
+      label: "Customer Status Update",
+      status: "Ready for review",
+      detail: "Customer wording is held while the critical context is active.",
+    },
+    {
+      label: "Last generated / ready to print",
+      status: "Jul 07, 09:00",
+      detail: "Report package is available for download or print.",
+    },
+  ];
 
   return (
     <div className="page-stack">
       <PageHeader
-        eyebrow="Live plant monitoring"
-        title="SMARTCONTROL 2.0 AI Dashboard"
-        description="Biogas Plant Monitoring, Anomaly Detection and Reporting"
-        action={
-          <button type="button" className="primary-button" onClick={onOpenAnomaly}>
-            <ArrowRight size={17} aria-hidden="true" />
-            Open Anomaly Detection
-          </button>
-        }
+        eyebrow="Operational overview"
+        title="Live Plant Monitoring Dashboard"
+        description="Operational snapshot for the selected plant and reporting period."
       />
 
       <FilterBar
@@ -64,72 +69,25 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
         onStatusChange={setSelectedStatus}
       />
 
-      <section className="poc-card-grid" aria-label="Three PoC process cards">
-        {pocCards.map((card) => (
-          <article className="poc-card" key={card.title}>
-            <div>
-              <p className="eyebrow">Status: {card.status}</p>
-              <h4>{card.title}</h4>
-              <p>{card.purpose}</p>
-            </div>
-            <dl>
-              <div>
-                <dt>Current stage</dt>
-                <dd>{card.stage}</dd>
-              </div>
-              <div>
-                <dt>Key output</dt>
-                <dd>{card.output}</dd>
-              </div>
-              <div>
-                <dt>System role</dt>
-                <dd>{card.aiRole}</dd>
-              </div>
-              <div>
-                <dt>Human review</dt>
-                <dd>{card.humanRole}</dd>
-              </div>
-            </dl>
-            <button type="button" className="secondary-button" onClick={() => openPoc(card.title)}>
-              <ArrowRight size={17} aria-hidden="true" />
-              Open {card.title}
-            </button>
-          </article>
-        ))}
-      </section>
-
-      <section className="summary-strip">
-        <article>
-          <Gauge size={20} aria-hidden="true" />
-          <span>Selected Plant</span>
-          <strong>{selectedPlant}</strong>
-        </article>
-        <article>
-          <ClipboardCheck size={20} aria-hidden="true" />
-          <span>Reporting Period</span>
-          <strong>{selectedPeriod}</strong>
-        </article>
-        <article>
-          <AlertTriangle size={20} aria-hidden="true" />
-          <span>Rule-Based Alerts</span>
-          <strong>{ruleAlertCount} active</strong>
-        </article>
-        <article>
-          <BrainCircuit size={20} aria-hidden="true" />
-          <span>Filtered Records</span>
-          <strong>{filteredCount}</strong>
-        </article>
-      </section>
-
       <section>
         <div className="section-heading">
           <h4>Current Plant Summary</h4>
           <p>Operational snapshot for the selected plant and reporting period.</p>
         </div>
-        <div className="summary-strip compact-summary">
+        <div className="summary-strip dashboard-summary-grid">
           <article>
             <Gauge size={20} aria-hidden="true" />
-            <span>Status</span>
+            <span>Selected Plant</span>
+            <strong>{selectedPlant}</strong>
+          </article>
+          <article>
+            <ClipboardCheck size={20} aria-hidden="true" />
+            <span>Reporting Period</span>
+            <strong>{selectedPeriod}</strong>
+          </article>
+          <article>
+            <Gauge size={20} aria-hidden="true" />
+            <span>Current Plant Status</span>
             <StatusBadge status={activePlantRecord.currentPlantStatus} />
           </article>
           <article>
@@ -162,47 +120,108 @@ function DashboardPage({ onOpenAnomaly }: { onOpenAnomaly: () => void }) {
         </div>
       </section>
 
-      <div className="dashboard-grid">
-        <section className="section-card">
-          <div className="section-title-row">
-            <BrainCircuit size={20} aria-hidden="true" />
-            <div>
-              <h4>AI Anomaly Summary</h4>
-              <p>Human-readable explanation for expert review.</p>
-            </div>
-          </div>
-          <div className="insight-box">
-            <StatusBadge status={activePlantRecord.currentPlantStatus} />
-            <p>{aiExplanation}</p>
-          </div>
-        </section>
+      <section className="section-card">
+        <div className="section-heading">
+          <h4>Active Alerts</h4>
+          <p>Rule-based monitoring outputs for the current selected plant snapshot.</p>
+        </div>
+        <div className="table-wrap">
+          <table className="data-table alert-table">
+            <thead>
+              <tr>
+                <th>Alert</th>
+                <th>Result</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ruleAlerts.map((field) => (
+                <tr key={field.key}>
+                  <td>{formatFieldName(field.key)}</td>
+                  <td>{displayValue(field.value)}</td>
+                  <td>
+                    <StatusBadge status={field.status} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-        <section className="section-card">
-          <div className="section-title-row">
-            <Wrench size={20} aria-hidden="true" />
-            <div>
-              <h4>Active Alerts and Recommended Action</h4>
-              <p>AI supports expert review; operator remains responsible.</p>
-            </div>
+      <section className="section-card">
+        <div className="section-title-row">
+          <BrainCircuit size={20} aria-hidden="true" />
+          <div>
+            <h4>AI Anomaly Summary</h4>
+            <p>Human-readable explanation and recommended action for expert review.</p>
+          </div>
+        </div>
+        <div className="summary-strip ai-summary-grid">
+          <article>
+            <Gauge size={20} aria-hidden="true" />
+            <span>Anomaly Score</span>
+            <strong>{activePlantRecord.anomalyScore.toFixed(2)}</strong>
+          </article>
+          <article>
+            <BrainCircuit size={20} aria-hidden="true" />
+            <span>Anomaly Status</span>
+            <StatusBadge status={activePlantRecord.anomalyStatus} />
+          </article>
+          <article>
+            <ClipboardCheck size={20} aria-hidden="true" />
+            <span>Expert Review Required</span>
+            <strong>{activePlantRecord.expertReviewRequired ? "Yes" : "No"}</strong>
+          </article>
+          <article>
+            <AlertTriangle size={20} aria-hidden="true" />
+            <span>Possible Issue Category</span>
+            <strong>{activePlantRecord.possibleIssueCategory}</strong>
+          </article>
+        </div>
+        <div className="dashboard-grid">
+          <div className="insight-box">
+            <p>{aiExplanation}</p>
           </div>
           <div className="insight-box accent">
             <p>{recommendedAction}</p>
           </div>
-        </section>
-      </div>
+        </div>
+        <div className="button-row">
+          <button type="button" className="secondary-button" onClick={onOpenAnomaly}>
+            <ArrowRight size={17} aria-hidden="true" />
+            Open Anomaly Detection
+          </button>
+        </div>
+      </section>
 
       <section className="section-card">
         <div className="section-title-row">
           <Lightbulb size={20} aria-hidden="true" />
           <div>
-            <h4>Latest Plant Reading</h4>
+            <h4>Latest Plant Readings</h4>
             <p>Grouped plant variables with dropdown filtering and safe fallback values.</p>
           </div>
         </div>
         <PlantFieldGroups fields={plantFields} selectedGroup={selectedGroup} selectedStatus={selectedStatus} />
       </section>
 
-      <ReportActions selectedPlant={selectedPlant} selectedPeriod={selectedPeriod} />
+      <section className="section-card">
+        <div className="section-heading">
+          <h4>Report / Update Status</h4>
+          <p>Current readiness of the report and communication outputs for the selected plant.</p>
+        </div>
+        <div className="report-status-grid">
+          {reportStatuses.map((item) => (
+            <article key={item.label} className="status-card">
+              <span>{item.label}</span>
+              <strong>{item.status}</strong>
+              <p>{item.detail}</p>
+            </article>
+          ))}
+        </div>
+        <ReportActions selectedPlant={selectedPlant} selectedPeriod={selectedPeriod} />
+      </section>
     </div>
   );
 }

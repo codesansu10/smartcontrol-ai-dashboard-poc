@@ -1131,52 +1131,6 @@ body {
   background: rgba(54, 175, 220, 0.16);
 }
 
-.poc-card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.poc-card {
-  display: grid;
-  gap: 18px;
-  padding: 22px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: linear-gradient(180deg, #ffffff, #f4fcff);
-  box-shadow: var(--shadow);
-}
-
-.poc-card h4,
-.poc-card p,
-.poc-card dl,
-.poc-card dd {
-  margin: 0;
-}
-
-.poc-card h4 {
-  color: var(--ink);
-  font-size: 1.16rem;
-}
-
-.poc-card p,
-.poc-card dd {
-  color: var(--muted);
-  line-height: 1.45;
-}
-
-.poc-card dl {
-  display: grid;
-  gap: 10px;
-}
-
-.poc-card dt {
-  color: var(--accent-teal-dark);
-  font-size: 0.76rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
 .print-helper {
   padding: 10px 12px;
   border: 1px solid rgba(54, 175, 220, 0.34);
@@ -1184,12 +1138,6 @@ body {
   color: var(--accent-teal-dark);
   background: rgba(54, 175, 220, 0.08);
   font-weight: 800;
-}
-
-@media (max-width: 1180px) {
-  .poc-card-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 520px) {
@@ -1411,6 +1359,60 @@ body {
 .summary-strip strong {
   color: var(--navy);
   font-size: 1.2rem;
+}
+
+.dashboard-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-summary-grid article,
+.ai-summary-grid article {
+  min-height: 104px;
+}
+
+.ai-summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 16px;
+}
+
+.alert-table {
+  min-width: 560px;
+}
+
+.report-status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.status-card {
+  display: grid;
+  gap: 7px;
+  min-height: 118px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.status-card span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.status-card strong {
+  color: var(--navy);
+  font-size: 1.02rem;
+}
+
+.status-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .dashboard-grid {
@@ -1788,6 +1790,7 @@ body {
 @media (max-width: 1180px) {
   .filter-bar,
   .summary-strip,
+  .report-status-grid,
   .report-preview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1819,6 +1822,7 @@ body {
   .summary-strip,
   .dashboard-grid,
   .field-card-grid,
+  .report-status-grid,
   .workflow-steps,
   .report-preview-grid,
   .learning-grid {

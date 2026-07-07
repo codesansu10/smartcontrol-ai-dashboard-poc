@@ -646,36 +646,6 @@ export const customerStatusBpmnSteps = [
   { title: "Customer action and learning", detail: "Send update, receive operator action, log communication, update lifecycle record, store learning data, and document outcome." },
 ];
 
-export const pocCards = [
-  {
-    title: "Anomaly Detection",
-    purpose: "Detect unusual plant behaviour from process, gas quality, and equipment signals.",
-    status: "Expert review pending",
-    stage: "AI alert generated",
-    aiRole: "Calculates anomaly score and prepares explanation.",
-    humanRole: "Expert validates, operator decides action.",
-    output: "Alert, recommendation, learning feedback, report update.",
-  },
-  {
-    title: "Monthly Expert Reporting",
-    purpose: "Turn monthly plant and SCADA data into an expert-approved report.",
-    status: "Draft review pending",
-    stage: "Expert sign-off",
-    aiRole: "Structures the draft, KPI summary, and missing-information checks.",
-    humanRole: "Expert reviews flagged issues and approves release.",
-    output: "Final report, audit trail, external submission.",
-  },
-  {
-    title: "Customer Status Updates",
-    purpose: "Generate routine customer updates and lifecycle/maintenance notifications.",
-    status: "Low-risk update ready",
-    stage: "Expert approval",
-    aiRole: "Predicts wear risk and drafts standardized updates.",
-    humanRole: "Expert approves message; customer operator confirms action.",
-    output: "Approved update, communication log, lifecycle record.",
-  },
-];
-
 export const monthlySources = [
   "Dashboard data",
   "Rule-based alerts",
